@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Support JeenyJAI</title>
+    <meta name="description" content="Support JeenyJAI — free developer tools. No strings attached.">
+    <meta property="og:title" content="Support JeenyJAI">
+    <meta property="og:description" content="Free developer tools. No strings attached. If they help you — consider supporting.">
+    <style>
+        :root {
+            --bg: #ffffff;
+            --text: #1a1a1a;
+            --muted: #666666;
+            --card-bg: #f5f5f5;
+            --card-border: #e0e0e0;
+            --card-hover: #eaeaea;
+            --accent: #2563eb;
+            --crypto-bg: #f0f0f0;
+            --footer-text: #999999;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0d1117;
+                --text: #e6edf3;
+                --muted: #8b949e;
+                --card-bg: #161b22;
+                --card-border: #30363d;
+                --card-hover: #1c2129;
+                --accent: #58a6ff;
+                --crypto-bg: #1c2129;
+                --footer-text: #484f58;
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        main {
+            max-width: 600px;
+            width: 100%;
+            padding: 60px 20px 40px;
+            flex: 1;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .avatar {
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .subtitle {
+            color: var(--muted);
+            font-size: 1.05rem;
+        }
+
+        .cta {
+            font-size: 1rem;
+            margin-bottom: 36px;
+            line-height: 1.7;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            color: var(--text);
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background 0.15s, border-color 0.15s;
+        }
+
+        .btn:hover {
+            background: var(--card-hover);
+            border-color: var(--accent);
+        }
+
+        .btn svg, .crypto-toggle svg {
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+
+        .btn-kofi svg { fill: #ff5e5b; }
+        .crypto-toggle svg { fill: #f7931a; }
+
+        .crypto-toggle {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            color: var(--text);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.15s, border-color 0.15s;
+        }
+
+        .crypto-toggle:hover {
+            background: var(--card-hover);
+            border-color: var(--accent);
+        }
+
+        .crypto-toggle .arrow {
+            transition: transform 0.2s;
+            font-size: 0.8rem;
+            margin-left: auto;
+        }
+
+        .crypto-toggle.open .arrow {
+            transform: rotate(90deg);
+        }
+
+        .crypto-details {
+            display: none;
+            background: var(--crypto-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 0 0 10px 10px;
+            margin-top: -13px;
+            padding: 16px 20px;
+        }
+
+        .crypto-details.open {
+            display: block;
+        }
+
+        .crypto-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+        }
+
+        .crypto-row + .crypto-row {
+            border-top: 1px solid var(--card-border);
+        }
+
+        .crypto-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            min-width: 0;
+            flex-shrink: 0;
+            width: 110px;
+        }
+
+        .crypto-label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .crypto-network {
+            font-size: 0.7rem;
+            color: var(--muted);
+            white-space: nowrap;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .crypto-addr {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: var(--muted);
+            font-family: "SF Mono", "Fira Code", "Fira Mono", Menlo, monospace;
+            font-size: 0.8rem;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .copy-btn {
+            background: none;
+            border: 1px solid var(--card-border);
+            border-radius: 6px;
+            color: var(--muted);
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: color 0.15s, border-color 0.15s;
+            flex-shrink: 0;
+        }
+
+        .copy-btn:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .copy-btn.copied {
+            color: #22c55e;
+            border-color: #22c55e;
+        }
+
+        .crypto-warning {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--card-border);
+            font-size: 0.78rem;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        @media (max-width: 480px) {
+            .crypto-row {
+                flex-wrap: wrap;
+            }
+            .crypto-addr {
+                flex-basis: 100%;
+                order: 3;
+                font-size: 0.72rem;
+            }
+        }
+
+        footer {
+            width: 100%;
+            text-align: center;
+            padding: 24px 20px;
+            color: var(--footer-text);
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 480px) {
+            main {
+                padding: 40px 16px 32px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            .btn, .crypto-toggle {
+                padding: 12px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <div class="header">
+            <img class="avatar" src="https://github.com/JeenyJAI.png" alt="JeenyJAI" width="80" height="80">
+            <div>
+                <h1>Support JeenyJAI</h1>
+                <p class="subtitle">Free developer tools</p>
+            </div>
+        </div>
+
+        <div class="buttons">
+            <!-- Crypto -->
+            <button class="crypto-toggle" onclick="toggleCrypto()">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23.638 14.904c-1.602 6.43-8.113 10.34-14.542 8.736C2.67 22.05-1.244 15.525.362 9.105 1.962 2.67 8.475-1.243 14.9.358c6.43 1.605 10.342 8.115 8.738 14.546zm-6.35-4.613c.24-1.59-.974-2.45-2.64-3.03l.54-2.153-1.315-.33-.525 2.107c-.345-.087-.7-.169-1.053-.25l.53-2.12-1.315-.33-.54 2.153c-.285-.065-.565-.13-.84-.2l.001-.007-1.815-.453-.35 1.407s.975.224.955.238c.535.136.63.494.614.778l-.614 2.46c.037.01.085.025.137.045l-.14-.036-.86 3.45c-.065.16-.23.4-.6.308.013.02-.955-.238-.955-.238l-.652 1.514 1.71.426c.32.08.63.164.94.243l-.546 2.19 1.315.33.54-2.16c.36.1.705.19 1.05.273l-.537 2.145 1.315.33.546-2.183c2.245.425 3.93.253 4.64-1.774.57-1.637-.03-2.58-1.217-3.196.867-.2 1.52-.77 1.694-1.94z"/></svg>
+                Crypto (BTC / ETH / USDT)
+                <span class="arrow">&#9654;</span>
+            </button>
+            <div class="crypto-details" id="cryptoDetails">
+                <div class="crypto-row">
+                    <div class="crypto-meta">
+                        <span class="crypto-label">BTC</span>
+                        <span class="crypto-network">Bitcoin</span>
+                    </div>
+                    <span class="crypto-addr" id="btcAddr">bc1qy859rsyvameguhpva4rjjma3lvnr46kyq8pjzc</span>
+                    <button class="copy-btn" onclick="copyAddr('btcAddr', this)" aria-label="Copy BTC address">Copy</button>
+                </div>
+                <div class="crypto-row">
+                    <div class="crypto-meta">
+                        <span class="crypto-label">ETH / USDT</span>
+                        <span class="crypto-network">Ethereum · ERC-20</span>
+                    </div>
+                    <span class="crypto-addr" id="evmAddr">0x6c7BF150e99e6C073B2b07413118D7704C5dE1BC</span>
+                    <button class="copy-btn" onclick="copyAddr('evmAddr', this)" aria-label="Copy Ethereum address">Copy</button>
+                </div>
+                <div class="crypto-row">
+                    <div class="crypto-meta">
+                        <span class="crypto-label">USDT</span>
+                        <span class="crypto-network">Tron · TRC-20</span>
+                    </div>
+                    <span class="crypto-addr" id="usdtTrcAddr">TUDia1T45SiXHNSsvNvKhCMgJziotKWpUb</span>
+                    <button class="copy-btn" onclick="copyAddr('usdtTrcAddr', this)" aria-label="Copy USDT TRC-20 address">Copy</button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer>
+        &copy; JeenyJAI
+    </footer>
+
+    <script>
+        function toggleCrypto() {
+            var btn = document.querySelector('.crypto-toggle');
+            var details = document.getElementById('cryptoDetails');
+            btn.classList.toggle('open');
+            details.classList.toggle('open');
+        }
+
+        function copyAddr(id, btn) {
+            var text = document.getElementById(id).textContent;
+            navigator.clipboard.writeText(text).then(function() {
+                btn.textContent = 'Copied!';
+                btn.classList.add('copied');
+                setTimeout(function() {
+                    btn.textContent = 'Copy';
+                    btn.classList.remove('copied');
+                }, 1500);
+            });
+        }
+    </script>
+    <script data-goatcounter="https://jeenyjai.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
